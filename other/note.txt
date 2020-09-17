@@ -1,0 +1,5 @@
+vm_size
+getclientrect
+- cộng tràn
+- seekcate 
+- cmp 

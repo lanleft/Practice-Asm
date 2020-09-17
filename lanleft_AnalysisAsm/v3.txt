@@ -1,0 +1,94 @@
+
+
+
+.text:00401090 ; int __cdecl main(int argc, const char **argv, const char **envp)
+.text:00401090 _main           proc near               ; CODE XREF: ___tmainCRTStartup+F8vp
+.text:00401090
+.text:00401090 var_24          = dword ptr -24h
+.text:00401090 var_20          = dword ptr -20h
+.text:00401090 var_1C          = dword ptr -1Ch
+.text:00401090 var_18          = dword ptr -18h
+.text:00401090 var_14          = dword ptr -14h
+.text:00401090 var_10          = dword ptr -10h
+.text:00401090 var_C           = dword ptr -0Ch
+.text:00401090 var_8           = dword ptr -8
+.text:00401090 var_4           = dword ptr -4
+.text:00401090 argc            = dword ptr  8
+.text:00401090 argv            = dword ptr  0Ch
+.text:00401090 envp            = dword ptr  10h
+.text:00401090
+.text:00401090                 push    ebp
+.text:00401091                 mov     ebp, esp
+.text:00401093                 sub     esp, 24h
+.text:00401096                 mov     eax, ___security_cookie
+.text:0040109B                 xor     eax, ebp
+.text:0040109D                 mov     [ebp+var_4], eax
+.text:004010A0                 mov     [ebp+var_1C], 3
+.text:004010A7                 mov     [ebp+var_18], 2
+.text:004010AE                 mov     [ebp+var_14], 309h
+.text:004010B5                 mov     [ebp+var_10], 4
+.text:004010BC                 mov     [ebp+var_C], 1
+.text:004010C3                 mov     [ebp+var_8], 0
+.text:004010CA                 mov     [ebp+var_24], 0
+.text:004010D1                 jmp     short loc_4010DC
+.text:004010D3 ; ---------------------------------------------------------------------------
+.text:004010D3
+.text:004010D3 loc_4010D3:                             ; CODE XREF: _main+68vj
+.text:004010D3                 mov     eax, [ebp+var_24]
+.text:004010D6                 add     eax, 1
+.text:004010D9                 mov     [ebp+var_24], eax
+.text:004010DC
+.text:004010DC loc_4010DC:                             ; CODE XREF: _main+41^j
+.text:004010DC                 cmp     [ebp+var_24], 6
+.text:004010E0                 jge     short loc_4010FA
+.text:004010E2                 mov     ecx, [ebp+var_24]
+.text:004010E5                 mov     edx, [ebp+ecx*4+var_1C]
+.text:004010E9                 push    edx
+.text:004010EA                 push    offset Format   ; "%u\t"
+.text:004010EF                 call    ds:printf
+.text:004010F5                 add     esp, 8
+.text:004010F8                 jmp     short loc_4010D3
+.text:004010FA ; ---------------------------------------------------------------------------
+.text:004010FA
+.text:004010FA loc_4010FA:                             ; CODE XREF: _main+50^j
+.text:004010FA                 push    offset asc_4020BC ; "\n\n"
+.text:004010FF                 call    ds:printf
+.text:00401105                 add     esp, 4
+.text:00401108                 push    6
+.text:0040110A                 lea     eax, [ebp+var_1C]
+.text:0040110D                 push    eax
+.text:0040110E                 call    sub_401000
+.text:00401113                 add     esp, 8
+.text:00401116                 mov     [ebp+var_20], 0
+.text:0040111D                 jmp     short loc_401128
+.text:0040111F ; ---------------------------------------------------------------------------
+.text:0040111F
+.text:0040111F loc_40111F:                             ; CODE XREF: _main+B4vj
+.text:0040111F                 mov     ecx, [ebp+var_20]
+.text:00401122                 add     ecx, 1
+.text:00401125                 mov     [ebp+var_20], ecx
+.text:00401128
+.text:00401128 loc_401128:                             ; CODE XREF: _main+8D^j
+.text:00401128                 cmp     [ebp+var_20], 6
+.text:0040112C                 jge     short loc_401146
+.text:0040112E                 mov     edx, [ebp+var_20]
+.text:00401131                 mov     eax, [ebp+edx*4+var_1C]
+.text:00401135                 push    eax
+.text:00401136                 push    offset aU       ; "%u\t"
+.text:0040113B                 call    ds:printf
+.text:00401141                 add     esp, 8
+.text:00401144                 jmp     short loc_40111F
+.text:00401146 ; ---------------------------------------------------------------------------
+.text:00401146
+.text:00401146 loc_401146:                             ; CODE XREF: _main+9C^j
+.text:00401146                 push    offset asc_4020C4 ; "\n\n"
+.text:0040114B                 call    ds:printf
+.text:00401151                 add     esp, 4
+.text:00401154                 xor     eax, eax
+.text:00401156                 mov     ecx, [ebp+var_4]
+.text:00401159                 xor     ecx, ebp
+.text:0040115B                 call    @__security_check_cookie@4 ; __security_check_cookie(x)
+.text:00401160                 mov     esp, ebp
+.text:00401162                 pop     ebp
+.text:00401163                 retn
+.text:00401163 _main           endp

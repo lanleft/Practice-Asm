@@ -1,0 +1,130 @@
+.text:00401000 ; int __cdecl main(int argc, const char **argv, const char **envp)
+.text:00401000 _main           proc near               ; CODE XREF: ___tmainCRTStartup+F8vp
+.text:00401000
+.text:00401000 nSize           = dword ptr -0F4h
+.text:00401000 nNumberOfBytesToWrite= dword ptr -0F0h
+.text:00401000 var_EC          = dword ptr -0ECh
+.text:00401000 var_E8          = dword ptr -0E8h
+.text:00401000 var_E4          = dword ptr -0E4h
+.text:00401000 hFile           = dword ptr -0E0h
+.text:00401000 Dest            = byte ptr -0DCh
+.text:00401000 Buffer          = byte ptr -14h
+.text:00401000 var_4           = dword ptr -4
+.text:00401000 argc            = dword ptr  8
+.text:00401000 argv            = dword ptr  0Ch
+.text:00401000 envp            = dword ptr  10h
+.text:00401000
+.text:00401000                 push    ebp
+.text:00401001                 mov     ebp, esp
+.text:00401003                 sub     esp, 0F4h
+.text:00401009                 mov     eax, ___security_cookie
+.text:0040100E                 xor     eax, ebp
+.text:00401010                 mov     [ebp+var_4], eax
+.text:00401013                 push    0               ; Time
+.text:00401015                 call    sub_401140
+.text:0040101A                 add     esp, 4
+.text:0040101D                 push    eax             ; Seed
+.text:0040101E                 call    ds:srand
+.text:00401024                 add     esp, 4
+.text:00401027                 call    ds:rand
+.text:0040102D                 mov     [ebp+var_E4], eax
+.text:00401033                 push    0               ; Time
+.text:00401035                 call    sub_401140
+.text:0040103A                 add     esp, 4
+.text:0040103D                 mov     [ebp+var_EC], eax
+.text:00401043                 mov     [ebp+nSize], 10h
+.text:0040104D                 lea     eax, [ebp+nSize]
+.text:00401053                 push    eax             ; nSize
+.text:00401054                 lea     ecx, [ebp+Buffer]
+.text:00401057                 push    ecx             ; lpBuffer
+.text:00401058                 call    ds:GetComputerNameA
+.text:0040105E                 lea     edx, [ebp+Buffer]
+.text:00401061                 push    edx
+.text:00401062                 mov     eax, [ebp+var_EC]
+.text:00401068                 push    eax
+.text:00401069                 mov     ecx, [ebp+var_E4]
+.text:0040106F                 push    ecx
+.text:00401070                 push    offset Format   ; "%u_%u_%s"
+.text:00401075                 lea     edx, [ebp+Dest]
+.text:0040107B                 push    edx             ; Dest
+.text:0040107C                 call    ds:sprintf
+.text:00401082                 add     esp, 14h
+.text:00401085                 lea     eax, [ebp+Dest]
+.text:0040108B                 push    eax             ; Str
+.text:0040108C                 call    strlen
+.text:00401091                 add     esp, 4
+.text:00401094                 mov     [ebp+nNumberOfBytesToWrite], eax
+.text:0040109A                 push    0               ; hTemplateFile
+.text:0040109C                 push    80h             ; dwFlagsAndAttributes
+.text:004010A1                 push    2               ; dwCreationDisposition
+.text:004010A3                 push    0               ; lpSecurityAttributes
+.text:004010A5                 push    0               ; dwShareMode
+.text:004010A7                 push    40000000h       ; dwDesiredAccess
+.text:004010AC                 push    offset FileName ; "beacon.txt"
+.text:004010B1                 call    ds:CreateFileA
+.text:004010B7                 mov     [ebp+hFile], eax
+.text:004010BD                 cmp     [ebp+hFile], 0FFFFFFFFh
+.text:004010C4                 jnz     short loc_4010D4
+.text:004010C6                 push    offset aUnableToCreate ; "Unable to create/open file\n"
+.text:004010CB                 call    ds:printf
+.text:004010D1                 add     esp, 4
+.text:004010D4
+.text:004010D4 loc_4010D4:                             ; CODE XREF: _main+C4^j
+.text:004010D4                 push    0               ; lpOverlapped
+.text:004010D6                 push    0               ; lpNumberOfBytesWritten
+.text:004010D8                 mov     ecx, [ebp+nNumberOfBytesToWrite]
+.text:004010DE                 push    ecx             ; nNumberOfBytesToWrite
+.text:004010DF                 lea     edx, [ebp+Dest]
+.text:004010E5                 push    edx             ; lpBuffer
+.text:004010E6                 mov     eax, [ebp+hFile]
+.text:004010EC                 push    eax             ; hFile
+.text:004010ED                 call    ds:WriteFile
+.text:004010F3                 mov     [ebp+var_E8], eax
+.text:004010F9                 cmp     [ebp+var_E8], 0
+.text:00401100                 jnz     short loc_401112
+.text:00401102                 push    offset aUnableToWriteT ; "Unable to write to file\n"
+.text:00401107                 call    ds:printf
+.text:0040110D                 add     esp, 4
+.text:00401110                 jmp     short loc_401120
+.text:00401112 ; ---------------------------------------------------------------------------
+.text:00401112
+.text:00401112 loc_401112:                             ; CODE XREF: _main+100^j
+.text:00401112                 push    offset aBeaconIsReady ; "Beacon is ready\n"
+.text:00401117                 call    ds:printf
+.text:0040111D                 add     esp, 4
+.text:00401120
+.text:00401120 loc_401120:                             ; CODE XREF: _main+110^j
+.text:00401120                 mov     ecx, [ebp+hFile]
+.text:00401126                 push    ecx             ; hObject
+.text:00401127                 call    ds:CloseHandle
+.text:0040112D                 xor     eax, eax
+.text:0040112F                 mov     ecx, [ebp+var_4]
+.text:00401132                 xor     ecx, ebp
+.text:00401134                 call    @__security_check_cookie@4 ; __security_check_cookie(x)
+.text:00401139                 mov     esp, ebp
+.text:0040113B                 pop     ebp
+.text:0040113C                 retn
+.text:0040113C _main           endp
+.text:0040113C
+.text:0040113C ; ---------------------------------------------------------------------------
+.text:0040113D                 align 10h
+.text:00401140
+.text:00401140 ; =============== S U B R O U T I N E =======================================
+.text:00401140
+.text:00401140 ; Attributes: bp-based frame
+.text:00401140
+.text:00401140 ; int __cdecl sub_401140(__time64_t *Time)
+.text:00401140 sub_401140      proc near               ; CODE XREF: _main+15^p
+.text:00401140                                         ; _main+35^p
+.text:00401140
+.text:00401140 Time            = dword ptr  8
+.text:00401140
+.text:00401140                 push    ebp
+.text:00401141                 mov     ebp, esp
+.text:00401143                 mov     eax, [ebp+Time]
+.text:00401146                 push    eax             ; Time
+.text:00401147                 call    ds:_time64
+.text:0040114D                 add     esp, 4
+.text:00401150                 pop     ebp
+.text:00401151                 retn
+.text:00401151 sub_401140      endp

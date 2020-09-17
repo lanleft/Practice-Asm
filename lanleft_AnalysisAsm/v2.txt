@@ -1,0 +1,121 @@
+.text:00401000 sub_401000      proc near               ; CODE XREF: _main+8vp
+.text:00401000
+.text:00401000 Time            = dword ptr  8
+.text:00401000
+.text:00401000                 push    ebp
+.text:00401001                 mov     ebp, esp
+.text:00401003                 mov     eax, [ebp+Time]
+.text:00401006                 push    eax             ; Time
+.text:00401007                 call    ds:_time64
+.text:0040100D                 add     esp, 4
+.text:00401010                 pop     ebp
+.text:00401011                 retn
+.text:00401011 sub_401000      endp
+
+
+.text:00401020 ; int __cdecl main(int argc, const char **argv, const char **envp)
+.text:00401020 _main           proc near               ; CODE XREF: ___tmainCRTStartup+F8vp
+.text:00401020
+.text:00401020 var_14          = dword ptr -14h
+.text:00401020 var_10          = dword ptr -10h
+.text:00401020 var_C           = dword ptr -0Ch
+.text:00401020 var_8           = dword ptr -8
+.text:00401020 var_4           = dword ptr -4
+.text:00401020 argc            = dword ptr  8
+.text:00401020 argv            = dword ptr  0Ch
+.text:00401020 envp            = dword ptr  10h
+.text:00401020
+.text:00401020                 push    ebp
+.text:00401021                 mov     ebp, esp
+.text:00401023                 sub     esp, 14h
+.text:00401026                 push    0               ; Time
+.text:00401028                 call    sub_401000
+.text:0040102D                 add     esp, 4
+.text:00401030                 push    eax             ; Seed
+.text:00401031                 call    ds:srand
+.text:00401037                 add     esp, 4
+.text:0040103A                 call    ds:rand
+.text:00401040                 cdq
+.text:00401041                 mov     ecx, 6
+.text:00401046                 idiv    ecx
+.text:00401048                 mov     [ebp+var_14], edx
+.text:0040104B                 mov     [ebp+var_8], 0Ah
+.text:00401052                 mov     [ebp+var_C], 8
+.text:00401059                 mov     [ebp+var_4], 0
+.text:00401060                 mov     edx, [ebp+var_14]
+.text:00401063                 mov     [ebp+var_10], edx
+.text:00401066                 cmp     [ebp+var_10], 5 ; switch 6 cases
+.text:0040106A                 ja      short loc_401076 ; jumptable 0040106F default case
+.text:0040106C                 mov     eax, [ebp+var_10]
+.text:0040106F                 jmp     ds:off_4010D0[eax*4] ; switch jump
+.text:00401076 ; ---------------------------------------------------------------------------
+.text:00401076
+.text:00401076 loc_401076:                             ; CODE XREF: _main+4A^j
+.text:00401076                 jmp     short loc_4010B7 ; jumptable 0040106F default case
+.text:00401078 ; ---------------------------------------------------------------------------
+.text:00401078
+.text:00401078 loc_401078:                             ; CODE XREF: _main+4F^j
+.text:00401078                                         ; DATA XREF: .text:off_4010D0vo
+.text:00401078                 mov     ecx, [ebp+var_8] ; jumptable 0040106F case 0
+.text:0040107B                 add     ecx, [ebp+var_C]
+.text:0040107E                 mov     [ebp+var_4], ecx
+.text:00401081                 jmp     short loc_4010B7
+.text:00401083 ; ---------------------------------------------------------------------------
+.text:00401083
+.text:00401083 loc_401083:                             ; CODE XREF: _main+4F^j
+.text:00401083                                         ; DATA XREF: .text:off_4010D0vo
+.text:00401083                 mov     edx, [ebp+var_8] ; jumptable 0040106F case 1
+.text:00401086                 sub     edx, [ebp+var_C]
+.text:00401089                 mov     [ebp+var_4], edx
+.text:0040108C                 jmp     short loc_4010B7
+.text:0040108E ; ---------------------------------------------------------------------------
+.text:0040108E
+.text:0040108E loc_40108E:                             ; CODE XREF: _main+4F^j
+.text:0040108E                                         ; DATA XREF: .text:off_4010D0vo
+.text:0040108E                 mov     eax, [ebp+var_8] ; jumptable 0040106F case 2
+.text:00401091                 imul    eax, [ebp+var_C]
+.text:00401095                 mov     [ebp+var_4], eax
+.text:00401098                 jmp     short loc_4010B7
+.text:0040109A ; ---------------------------------------------------------------------------
+.text:0040109A
+.text:0040109A loc_40109A:                             ; CODE XREF: _main+4F^j
+.text:0040109A                                         ; DATA XREF: .text:off_4010D0vo
+.text:0040109A                 mov     ecx, [ebp+var_8] ; jumptable 0040106F case 4
+.text:0040109D                 sub     ecx, 3
+.text:004010A0                 mov     [ebp+var_4], ecx
+.text:004010A3                 jmp     short loc_4010B7
+.text:004010A5 ; ---------------------------------------------------------------------------
+.text:004010A5
+.text:004010A5 loc_4010A5:                             ; CODE XREF: _main+4F^j
+.text:004010A5                                         ; DATA XREF: .text:off_4010D0vo
+.text:004010A5                 mov     [ebp+var_4], 309h ; jumptable 0040106F case 3
+.text:004010AC                 jmp     short loc_4010B7
+.text:004010AE ; ---------------------------------------------------------------------------
+.text:004010AE
+.text:004010AE loc_4010AE:                             ; CODE XREF: _main+4F^j
+.text:004010AE                                         ; DATA XREF: .text:off_4010D0vo
+.text:004010AE                 mov     edx, [ebp+var_C] ; jumptable 0040106F case 5
+.text:004010B1                 add     edx, 17h
+.text:004010B4                 mov     [ebp+var_4], edx
+.text:004010B7
+.text:004010B7 loc_4010B7:                             ; CODE XREF: _main:loc_401076^j
+.text:004010B7                                         ; _main+61^j ...
+.text:004010B7                 mov     eax, [ebp+var_4]
+.text:004010BA                 push    eax
+.text:004010BB                 push    offset Format   ; "%u\n"
+.text:004010C0                 call    ds:printf
+.text:004010C6                 add     esp, 8
+.text:004010C9                 xor     eax, eax
+.text:004010CB                 mov     esp, ebp
+.text:004010CD                 pop     ebp
+.text:004010CE                 retn
+.text:004010CE _main           endp
+.text:004010CE
+.text:004010CE ; ---------------------------------------------------------------------------
+.text:004010CF                 align 10h
+.text:004010D0 off_4010D0      dd offset loc_401078    ; DATA XREF: _main+4F^r
+.text:004010D0                 dd offset loc_401083    ; jump table for switch statement
+.text:004010D0                 dd offset loc_40108E
+.text:004010D0                 dd offset loc_4010A5
+.text:004010D0                 dd offset loc_40109A
+.text:004010D0                 dd offset loc_4010AE

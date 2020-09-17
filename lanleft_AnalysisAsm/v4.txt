@@ -1,0 +1,123 @@
+.text:00401000 ; int __cdecl main(int argc, const char **argv, const char **envp)
+.text:00401000 _main           proc near               ; CODE XREF: ___tmainCRTStartup+F8vp
+.text:00401000
+.text:00401000 StartupInfo     = _STARTUPINFOA ptr -1DCh
+.text:00401000 ProcessInformation= _PROCESS_INFORMATION ptr -198h
+.text:00401000 nNumberOfBytesToWrite= dword ptr -188h
+.text:00401000 var_184         = dword ptr -184h
+.text:00401000 hFile           = dword ptr -180h
+.text:00401000 Filename        = byte ptr -17Ch
+.text:00401000 Dest            = byte ptr -78h
+.text:00401000 Format          = byte ptr -14h
+.text:00401000 var_10          = dword ptr -10h
+.text:00401000 var_C           = dword ptr -0Ch
+.text:00401000 var_8           = byte ptr -8
+.text:00401000 var_4           = dword ptr -4
+.text:00401000 argc            = dword ptr  8
+.text:00401000 argv            = dword ptr  0Ch
+.text:00401000 envp            = dword ptr  10h
+.text:00401000
+.text:00401000                 push    ebp
+.text:00401001                 mov     ebp, esp
+.text:00401003                 sub     esp, 1DCh
+.text:00401009                 mov     eax, ___security_cookie
+.text:0040100E                 xor     eax, ebp
+.text:00401010                 mov     [ebp+var_4], eax
+.text:00401013                 mov     [ebp+var_184], 0
+.text:0040101D                 mov     eax, ds:dword_4020D8
+.text:00401022                 mov     dword ptr [ebp+Format], eax
+.text:00401025                 mov     ecx, ds:dword_4020DC
+.text:0040102B                 mov     [ebp+var_10], ecx
+.text:0040102E                 mov     edx, ds:dword_4020E0
+.text:00401034                 mov     [ebp+var_C], edx
+.text:00401037                 mov     al, ds:byte_4020E4
+.text:0040103C                 mov     [ebp+var_8], al
+.text:0040103F                 mov     [ebp+StartupInfo.cb], 44h
+.text:00401049                 push    40h             ; Size
+.text:0040104B                 push    0               ; Val
+.text:0040104D                 lea     ecx, [ebp+StartupInfo.lpReserved]
+.text:00401053                 push    ecx             ; Dst
+.text:00401054                 call    memset
+.text:00401059                 add     esp, 0Ch
+.text:0040105C                 push    104h            ; nSize
+.text:00401061                 lea     edx, [ebp+Filename]
+.text:00401067                 push    edx             ; lpFilename
+.text:00401068                 push    0               ; hModule
+.text:0040106A                 call    ds:GetModuleFileNameA
+.text:00401070                 lea     eax, [ebp+Filename]
+.text:00401076                 push    eax
+.text:00401077                 lea     ecx, [ebp+Format]
+.text:0040107A                 push    ecx             ; Format
+.text:0040107B                 lea     edx, [ebp+Dest]
+.text:0040107E                 push    edx             ; Dest
+.text:0040107F                 call    ds:sprintf
+.text:00401085                 add     esp, 0Ch
+.text:00401088                 lea     eax, [ebp+Dest]
+.text:0040108B                 push    eax             ; Str
+.text:0040108C                 call    strlen
+.text:00401091                 add     esp, 4
+.text:00401094                 mov     [ebp+nNumberOfBytesToWrite], eax
+.text:0040109A                 push    0               ; hTemplateFile
+.text:0040109C                 push    80h             ; dwFlagsAndAttributes
+.text:004010A1                 push    2               ; dwCreationDisposition
+.text:004010A3                 push    0               ; lpSecurityAttributes
+.text:004010A5                 push    0               ; dwShareMode
+.text:004010A7                 push    40000000h       ; dwDesiredAccess
+.text:004010AC                 push    offset FileName ; "hacked.bat"
+.text:004010B1                 call    ds:CreateFileA
+.text:004010B7                 mov     [ebp+hFile], eax
+.text:004010BD                 cmp     [ebp+hFile], 0FFFFFFFFh
+.text:004010C4                 jnz     short loc_4010D4
+.text:004010C6                 push    offset Format   ; "Unable to create/open file, aborting..."...
+.text:004010CB                 call    ds:printf
+.text:004010D1                 add     esp, 4
+.text:004010D4
+.text:004010D4 loc_4010D4:                             ; CODE XREF: _main+C4^j
+.text:004010D4                 push    0               ; lpOverlapped
+.text:004010D6                 push    0               ; lpNumberOfBytesWritten
+.text:004010D8                 mov     ecx, [ebp+nNumberOfBytesToWrite]
+.text:004010DE                 push    ecx             ; nNumberOfBytesToWrite
+.text:004010DF                 lea     edx, [ebp+Dest]
+.text:004010E2                 push    edx             ; lpBuffer
+.text:004010E3                 mov     eax, [ebp+hFile]
+.text:004010E9                 push    eax             ; hFile
+.text:004010EA                 call    ds:WriteFile
+.text:004010F0                 mov     [ebp+var_184], eax
+.text:004010F6                 cmp     [ebp+var_184], 0
+.text:004010FD                 jnz     short loc_40110F
+.text:004010FF                 push    offset aUnableToWriteT ; "Unable to write to file, aborting...\n"
+.text:00401104                 call    ds:printf
+.text:0040110A                 add     esp, 4
+.text:0040110D                 jmp     short loc_40111D
+.text:0040110F ; ---------------------------------------------------------------------------
+.text:0040110F
+.text:0040110F loc_40110F:                             ; CODE XREF: _main+FD^j
+.text:0040110F                 push    offset aBatFileSuccess ; "bat-file successfully created, launchin"...
+.text:00401114                 call    ds:printf
+.text:0040111A                 add     esp, 4
+.text:0040111D
+.text:0040111D loc_40111D:                             ; CODE XREF: _main+10D^j
+.text:0040111D                 mov     ecx, [ebp+hFile]
+.text:00401123                 push    ecx             ; hObject
+.text:00401124                 call    ds:CloseHandle
+.text:0040112A                 lea     edx, [ebp+ProcessInformation]
+.text:00401130                 push    edx             ; lpProcessInformation
+.text:00401131                 lea     eax, [ebp+StartupInfo]
+.text:00401137                 push    eax             ; lpStartupInfo
+.text:00401138                 push    0               ; lpCurrentDirectory
+.text:0040113A                 push    0               ; lpEnvironment
+.text:0040113C                 push    0               ; dwCreationFlags
+.text:0040113E                 push    0               ; bInheritHandles
+.text:00401140                 push    0               ; lpThreadAttributes
+.text:00401142                 push    0               ; lpProcessAttributes
+.text:00401144                 push    offset CommandLine ; "cmd.exe /C hacked.bat"
+.text:00401149                 push    0               ; lpApplicationName
+.text:0040114B                 call    ds:CreateProcessA
+.text:00401151                 xor     eax, eax
+.text:00401153                 mov     ecx, [ebp+var_4]
+.text:00401156                 xor     ecx, ebp
+.text:00401158                 call    @__security_check_cookie@4 ; __security_check_cookie(x)
+.text:0040115D                 mov     esp, ebp
+.text:0040115F                 pop     ebp
+.text:00401160                 retn
+.text:00401160 _main           endp
